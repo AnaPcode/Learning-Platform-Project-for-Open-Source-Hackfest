@@ -202,12 +202,11 @@ After completing this platform, users will:
 Built with:
 - **Google Gemini API** for AI-powered personalization
 - **GitHub REST API** for live project data and PR automation
-- Inspiration from **First Timers Only** and **Good First Issue**
+- **Claude Code** for AI Pair Programming
 
 Special thanks to all contributors who make open source accessible!
 
 ---
-
 
 ## 🌟 Support
 
