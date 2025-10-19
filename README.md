@@ -45,7 +45,8 @@ Step-by-step guide through the Git workflow: fork, clone, branch, commit, push, 
 ### Module 4: Join the Community
 Submit your completion PR and learn next steps for continuing your open source journey.
 
-<img width="1098" height="768" alt="Screenshot 2025-10-19 at 3 02 04 AM" src="https://github.com/user-attachments/assets/a7a9949b-8b23-4b83-91f9-a1d30c6d4723" />
+Example of Completed PR:
+<img width="732" height="512" alt="Screenshot 2025-10-19 at 3 02 04 AM" src="https://github.com/user-attachments/assets/a7a9949b-8b23-4b83-91f9-a1d30c6d4723" />
 
 
 **Total Duration:** 60-90 minutes
