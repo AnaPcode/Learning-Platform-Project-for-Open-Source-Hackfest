@@ -217,4 +217,4 @@ By contributing to this project, you agree that your contributions will be licen
 
 **Happy Contributing! 🚀**
 
-*This project was created for the [Open Source Hackfest] to teach the next generation of open source contributors.*
+*This project was created for the Open Source Hackfest hosted by MLH to teach the next generation of open source contributors.*
