@@ -727,8 +727,31 @@ async function submitPullRequest() {
         updatePRStatus('⏳ Step 2/6: Waiting for fork to complete...');
         await sleep(5000);  // Wait 5 seconds
 
-        // Step 3: Get current CONTRIBUTORS.md file
-        updatePRStatus('📖 Step 3/6: Reading CONTRIBUTORS.md...');
+        // Step 3: Check if user already completed (check main repo, not their fork)
+        updatePRStatus('📖 Step 3/6: Checking if you already completed...');
+
+        const mainRepoCheck = await fetch(
+            `https://api.github.com/repos/${YOUR_USERNAME}/${YOUR_REPO}/contents/CONTRIBUTORS.md`,
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            }
+        );
+
+        if (mainRepoCheck.ok) {
+            const mainRepoData = await mainRepoCheck.json();
+            const mainRepoContent = atob(mainRepoData.content);
+
+            // Check if user already exists in the MAIN repo
+            if (mainRepoContent.includes(`@${githubUsername}`)) {
+                throw new Error(`You've already completed this course! Your name is already in CONTRIBUTORS.md. Check it out: https://github.com/${YOUR_USERNAME}/${YOUR_REPO}/blob/main/CONTRIBUTORS.md 🎉`);
+            }
+        }
+
+        // Step 4: Get CONTRIBUTORS.md from their fork
+        updatePRStatus('📖 Step 4/6: Reading CONTRIBUTORS.md from your fork...');
 
         const fileResponse = await fetch(
             `https://api.github.com/repos/${githubUsername}/${YOUR_REPO}/contents/CONTRIBUTORS.md`,
@@ -741,21 +764,16 @@ async function submitPullRequest() {
         );
 
         if (!fileResponse.ok) {
-            throw new Error('Could not read CONTRIBUTORS.md file');
+            throw new Error('Could not read CONTRIBUTORS.md file from your fork');
         }
 
         const fileData = await fileResponse.json();
 
-        // Step 4: Add student's name
-        updatePRStatus('✏️ Step 4/6: Adding your name to the file...');
+        // Step 5: Add student's name
+        updatePRStatus('✏️ Step 5/6: Adding your name to the file...');
 
-        // Decode base64 content
+        // Decode base64 content from their fork
         const currentContent = atob(fileData.content);
-
-        // Check if this user already exists in the file
-        if (currentContent.includes(`@${githubUsername}`)) {
-            throw new Error(`You've already completed this course! Your name is already in CONTRIBUTORS.md. Check out the file to see your entry! 🎉`);
-        }
 
         // Create new entry
         const newEntry = `- [@${githubUsername}](https://github.com/${githubUsername}) - ${name} - ${new Date().toLocaleDateString()}`;
