@@ -1,46 +1,37 @@
-# Open Source Learning Platform
+# Open Source Learning
 
 **Learn to contribute to open source through AI-powered personalized lessons**
 
-[Live Demo](https://nastia.github.io/Learning-Platform-Project-for-Open-Source-Hackfest/) - Try it now!
+## 🔗 Links
 
-## About This Project
+- **[Live Platform](https://anapcode.github.io/Learning-Platform-Project-for-Open-Source-Hackfest/)** - Start learning now!
+- **[Demo Video](#)** - *(Coming soon)*
 
-This is an interactive web-based learning platform that teaches complete beginners how to make their first open source contribution. Using Google's Gemini AI, it personalizes lessons based on your interests and skill level, then guides you through submitting a real Pull Request to GitHub.
+---
 
-### What Makes This Special
+## 📖 About This Project
 
-- **AI-Powered Personalization**: Gemini AI adapts lessons to your interests (game dev, web dev, data science, etc.)
-- **Real-World Practice**: Submit an actual Pull Request that appears on your GitHub profile
-- **Beginner-Friendly**: No prior open source experience needed
-- **Self-Paced Learning**: Complete modules at your own speed with progress tracking
+Open Source Learning is an interactive web-based platform that teaches complete beginners how to make their first open source contribution. Using Google's Gemini AI, it personalizes lessons based on your interests and skill level, then guides you through submitting a real Pull Request to GitHub.
 
-## For Hackathon Judges
+## ✨ Features
 
-### Quick Start (30 seconds)
+- **👥 Beginner-Friendly**: No prior open source experience needed
+- **⏱️ Self-Paced Learning**: Complete modules at your own speed with progress tracking
+- **💾 Progress Persistence**: Pick up right where you left off (saved in browser localStorage - note: clearing cache or switching browsers will reset progress)
+- **Personalized Learning**: AI adapts content based on your tech interests and skill level
+- **Live GitHub Integration**: Discover real projects and issues with beginner-friendly labels
+- **Interactive Quizzes**: Validate your knowledge before progressing to the next module
+- **Real Contributions**: Submit an actual Pull Request as part of course completion
+- **Collapsible Sidebar**: Clean, modern UI with progress visualization
 
-1. Visit the [Live Demo](https://nastia.github.io/Learning-Platform-Project-for-Open-Source-Hackfest/)
-2. Get a free Gemini API key: https://aistudio.google.com/apikey
-3. Start learning!
+---
 
-### Prize Categories
+## 🎓 Course Modules
 
-This project qualifies for:
-- **Best Use of Gemini API** - Core AI tutoring functionality
-- **Best Documentation** - Comprehensive learning content and guides
-- **Code for Good** - Teaching open source contributes to social good by democratizing access to collaborative development
+The platform guides you through 4 comprehensive modules:
 
-### Tech Stack
-
-- **Frontend**: HTML, CSS, Vanilla JavaScript
-- **AI**: Google Gemini API
-- **Data**: GitHub REST API
-- **Storage**: localStorage
-- **Hosting**: GitHub Pages
-
-No frameworks, no build tools - pure web fundamentals!
-
-## Course Modules
+### Module 0: Home / Setup
+Get your free API keys.
 
 ### Module 1: Understanding Open Source
 Learn what open source is, why it matters, and discover popular projects in your field of interest.
@@ -49,24 +40,49 @@ Learn what open source is, why it matters, and discover popular projects in your
 Discover how to identify beginner-friendly contribution opportunities and evaluate project quality.
 
 ### Module 3: Making Your First Contribution
-Step-by-step guide through the Git workflow: fork, clone, branch, commit, push, and create a Pull Request.
+Step-by-step guide through the Git workflow: fork, clone, branch, commit, push, and how to create a Pull Request.
 
 ### Module 4: Join the Community
 Submit your completion PR and learn next steps for continuing your open source journey.
 
-## Features
+**Total Duration:** 60-90 minutes
 
-- **Personalized Learning**: AI adapts content based on your tech interests and skill level
-- **Live GitHub Integration**: Discover real projects and issues
-- **Progress Tracking**: Save your progress and pick up where you left off
-- **Interactive Quizzes**: Test your knowledge with simple multiple-choice questions
-- **Real Contributions**: Submit an actual Pull Request as part of course completion
+---
 
-## Installation & Local Development
+## 🛠️ Tech Stack
+
+- **Frontend**: HTML5, CSS3, Vanilla JavaScript (ES6+)
+- **AI**: Google Gemini API (gemini-2.5-flash model)
+- **Data**: GitHub REST API
+- **Storage**: localStorage (client-side persistence)
+- **Hosting**: GitHub Pages
+
+**No frameworks, no build tools** - pure web fundamentals for accessibility and contribution ease!
+
+---
+
+## 🚀 How It Works
+
+1. **Setup**: Enter your free Gemini API key and GitHub token
+2. **Personalize**: Select your interests and skill level
+3. **Learn**: Work through 4 interactive modules at your own pace
+4. **Contribute**: Submit a real Pull Request using your GitHub account
+5. **Celebrate**: Join the open source community with your first contribution!
+
+### User Journey Flow
+
+```
+Home (API Setup) → Module 1 (Learn Basics) → Module 2 (Find Issues) →
+Module 3 (Git Workflow) → Module 4 (Submit PR) → Success! 🎉
+```
+
+---
+
+## 💻 Installation & Local Development
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/Learning-Platform-Project-for-Open-Source-Hackfest.git
+git clone https://github.com/AnaPcode/Learning-Platform-Project-for-Open-Source-Hackfest.git
 
 # Navigate to the project
 cd Learning-Platform-Project-for-Open-Source-Hackfest
@@ -76,91 +92,127 @@ cd Learning-Platform-Project-for-Open-Source-Hackfest
 # No build step or dependencies needed!
 ```
 
-## How It Works
+---
 
-1. **Sign Up**: Enter your Gemini API key to unlock AI-powered lessons
-2. **Personalize**: Tell us your interests and skill level
-3. **Learn**: Work through 4 modules at your own pace
-4. **Contribute**: Submit a real Pull Request using your GitHub account
-5. **Celebrate**: Join the open source community!
+## 🏗️ Architecture Overview
 
-## Project Impact (Code for Good)
+### Client-Side Only Architecture
+- **Zero backend**: All logic runs in the browser
+- **localStorage database**: No server-side database needed
+- **User-provided API keys**: No secret management burden
 
-This project addresses a real-world problem: **open source contribution barriers**.
+### Core Components
 
-### The Problem
-- Many developers want to contribute to open source but don't know where to start
-- Existing resources are scattered and overwhelming for beginners
-- The learning curve is steep without personalized guidance
+| Component | Responsibility | Location |
+|-----------|---------------|----------|
+| **Progress Manager** | State persistence & restoration | [script.js:54-144](script.js#L54-L144) |
+| **Navigation Controller** | Module routing & progression | [script.js:156-250](script.js#L156-L250) |
+| **Content Generator** | AI prompt orchestration | [script.js:374-620](script.js#L374-L620) |
+| **Discovery Service** | GitHub project/issue search | [github-api.js:46-399](github-api.js#L46-L399) |
+| **PR Automation Engine** | End-to-end PR workflow | [script.js:688-866](script.js#L688-L866) |
+| **Quiz Validator** | Answer checking & unlocking | [script.js:632-662](script.js#L632-L662) |
 
-### Our Solution
-- Free, accessible education for anyone with a web browser
-- AI-powered personalization makes learning relevant and engaging
-- Hands-on practice with real Pull Requests builds confidence
-- Democratizes access to collaborative development skills
+### Key Features
 
-### Social Impact
-- **Career Growth**: Open source contributions help developers build portfolios
-- **Knowledge Sharing**: More contributors means better software for everyone
-- **Community Building**: Connects beginners to welcoming open source projects
-- **Digital Equity**: Free education accessible to anyone worldwide
-
-## Contributing
-
-We welcome contributions! This project was built for the Open Source Hackfest, and we encourage others to improve it.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
-
-## Code of Conduct
-
-We are committed to providing a welcoming and inclusive experience for everyone. Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before participating.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Roadmap
-
-### Current Features
-- 4-module curriculum
-- Gemini AI integration
-- GitHub PR submission
-- Progress tracking
-
-### Future Enhancements
-- User accounts and authentication
-- More advanced modules
-- Achievement badges
-- Community features
-- Mobile app version
-- Multiple language support
-- Video tutorials
-- Mentor matching system
-
-## Support
-
-If you have questions or run into issues:
-- Open an issue on GitHub
-- Check the in-app help guides
-- Review the [CONTRIBUTING.md](CONTRIBUTING.md) for development setup
-
-## Acknowledgments
-
-Built with:
-- Google Gemini API for AI-powered personalization
-- GitHub REST API for live project data
-- Inspiration from First Timers Only and Good First Issue
-
-## Team
-
-Created for the Open Source Hackfest 2025
-
-## Links
-
-- [Live Demo](https://nastia.github.io/Learning-Platform-Project-for-Open-Source-Hackfest/)
-- [GitHub Repository](https://github.com/yourusername/Learning-Platform-Project-for-Open-Source-Hackfest)
-- [Project Specification](opensource-learning-spec.md)
+- **Progressive Disclosure**: Modules unlock as you progress
+- **Fallback Resilience**: Static data when APIs are unavailable
+- **Multi-Session Support**: Resume learning anytime
+- **6-Step PR Automation**: Fork → Wait → Check → Read → Commit → PR
 
 ---
 
-Made with dedication to making open source accessible to everyone.
+## 🛠️ Development
+
+This project was developed with the assistance of **Claude Code**, an AI pair programming tool from Anthropic. AI was used as a development assistant for:
+- Code implementation and debugging
+- Documentation generation
+- Architecture design decisions
+- UI/UX improvements
+
+The combination of human creativity and AI assistance demonstrates modern development practices and rapid prototyping capabilities.
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Whether you're fixing bugs, improving documentation, or adding new features, your help makes open source more accessible to everyone.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+
+---
+
+## 📜 Code of Conduct
+
+We are committed to providing a welcoming and inclusive experience for everyone. Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before participating.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🗺️ Roadmap
+
+### Current Features ✅
+- 4-module curriculum (60-90 min completion time)
+- Gemini AI personalization
+- Live GitHub project/issue discovery
+- Automated PR submission
+- Progress tracking with localStorage
+- Collapsible sidebar navigation
+
+### Future Enhancements 🔮
+- User accounts and authentication
+- Advanced modules (rebasing, code review, etc.)
+- Achievement badges and gamification
+- Community features (mentor matching, forums)
+- Mobile app version
+- Multiple language support
+- Integrated video tutorials
+- Real-time collaboration features
+
+---
+
+## 💡 Use Cases
+
+Perfect for:
+- **Complete beginners** wanting to learn open source fundamentals
+- **Students** building their GitHub portfolios
+- **Career switchers** entering tech through open source
+- **Experienced developers** new to open source contribution
+- **Educators** teaching collaborative development
+
+---
+
+## 📊 Success Metrics
+
+After completing this platform, users will:
+- ✅ Understand core open source concepts
+- ✅ Know how to find beginner-friendly issues
+- ✅ Execute the complete Git workflow
+- ✅ Have a real PR on their GitHub profile
+- ✅ Feel confident contributing to open source projects
+
+---
+
+## 🙏 Acknowledgments
+
+Built with:
+- **Google Gemini API** for AI-powered personalization
+- **GitHub REST API** for live project data and PR automation
+- Inspiration from **First Timers Only** and **Good First Issue**
+
+Special thanks to all contributors who make open source accessible!
+
+---
+
+
+## 🌟 Support
+
+If you find this project helpful:
+- ⭐ Star this repository
+- 🐛 Report bugs via [GitHub Issues](https://github.com/AnaPcode/Learning-Platform-Project-for-Open-Source-Hackfest/issues)
+- 💬 Share your feedback
+- 🤝 Contribute improvements
