@@ -1,0 +1,121 @@
+name: Check for Duplicate Contributors
+
+# This workflow runs automatically when a Pull Request is opened or updated
+# It checks if the GitHub username already exists in CONTRIBUTORS.md
+# This prevents students from submitting multiple completion PRs
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'CONTRIBUTORS.md'
+
+jobs:
+  check-duplicate:
+    runs-on: ubuntu-latest
+
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch both the PR branch and the base branch
+          fetch-depth: 0
+
+      - name: Get PR author
+        id: pr-author
+        run: |
+          # Get the GitHub username of the person who opened the PR
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          echo "author=$PR_AUTHOR" >> $GITHUB_OUTPUT
+          echo "PR opened by: $PR_AUTHOR"
+
+      - name: Check for duplicate in CONTRIBUTORS.md
+        id: check-duplicate
+        run: |
+          PR_AUTHOR="${{ steps.pr-author.outputs.author }}"
+
+          # Check out the main branch to see current CONTRIBUTORS.md
+          git checkout origin/${{ github.event.pull_request.base.ref }}
+
+          # Search for the GitHub username in CONTRIBUTORS.md
+          # We search for @username to match the format in the file
+          if grep -q "@$PR_AUTHOR" CONTRIBUTORS.md; then
+            echo "duplicate=true" >> $GITHUB_OUTPUT
+            echo "❌ DUPLICATE DETECTED: @$PR_AUTHOR already exists in CONTRIBUTORS.md"
+          else
+            echo "duplicate=false" >> $GITHUB_OUTPUT
+            echo "✅ NEW CONTRIBUTOR: @$PR_AUTHOR is not in CONTRIBUTORS.md yet"
+          fi
+
+      - name: Comment on PR - Duplicate Found
+        if: steps.check-duplicate.outputs.duplicate == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prAuthor = '${{ steps.pr-author.outputs.author }}';
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## ❌ Duplicate Submission Detected
+
+Hey @${prAuthor}! 👋
+
+It looks like you've already completed this course! Your GitHub username (\`@${prAuthor}\`) is already listed in \`CONTRIBUTORS.md\`.
+
+**What this means:**
+- ✅ You successfully completed the course previously
+- ✅ Your name is already on the contributors wall
+- ❌ This PR is a duplicate and cannot be merged
+
+**What you should do:**
+1. Check the [CONTRIBUTORS.md file](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/main/CONTRIBUTORS.md) to see your entry
+2. Close this PR (no further action needed)
+3. Celebrate! You're already done! 🎉
+
+**Note:** If you believe this is an error, please comment below and the maintainer will investigate.
+
+---
+*This check was performed automatically by GitHub Actions to prevent duplicate submissions.*`
+            });
+
+      - name: Comment on PR - New Contributor
+        if: steps.check-duplicate.outputs.duplicate == 'false'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prAuthor = '${{ steps.pr-author.outputs.author }}';
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## ✅ New Contributor Detected!
+
+Welcome @${prAuthor}! 🎉
+
+Your submission looks good! You're not already in the contributors list.
+
+**Next steps:**
+- The maintainer will review your PR shortly
+- Once approved and merged, your name will appear on the [Contributors Wall](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/main/CONTRIBUTORS.md)
+- You'll have your first open source contribution on your GitHub profile!
+
+Thank you for completing the Open Source Learning Platform course! 🚀
+
+---
+*This check was performed automatically by GitHub Actions.*`
+            });
+
+      - name: Fail workflow if duplicate
+        if: steps.check-duplicate.outputs.duplicate == 'true'
+        run: |
+          echo "::error::Duplicate contributor detected. This PR cannot be merged."
+          exit 1
