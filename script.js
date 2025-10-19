@@ -219,9 +219,7 @@ function updateSidebar() {
     });
 
     // Update progress indicator in header
-    if (currentModule > 0) {
-        document.getElementById('current-module-number').textContent = currentModule;
-    }
+    document.getElementById('current-module-number').textContent = currentModule;
 }
 
 // Navigate to a specific module
@@ -689,11 +687,19 @@ async function submitPullRequest() {
     // Get form values
     const name = document.getElementById('student-name').value.trim();
     const githubUsername = document.getElementById('github-username').value.trim();
-    const token = document.getElementById('github-token').value.trim();
+
+    // Get GitHub token from stored progress (saved from home setup)
+    const token = userProgress.githubToken;
 
     // Validate inputs
-    if (!name || !githubUsername || !token) {
+    if (!name || !githubUsername) {
         alert('Please fill in all fields!');
+        return;
+    }
+
+    // Validate token exists
+    if (!token) {
+        alert('GitHub token not found! Please go back to the Home page and enter your GitHub token.');
         return;
     }
 
@@ -933,6 +939,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ─────────────────────────────────────────────────────────────
+    // SIDEBAR TOGGLE FUNCTIONALITY
+    // ─────────────────────────────────────────────────────────────
+
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+
+    sidebarToggle.addEventListener('click', function() {
+        // Toggle collapsed class on sidebar
+        sidebar.classList.toggle('collapsed');
+        // Toggle expanded class on main content
+        mainContent.classList.toggle('expanded');
+    });
+
+    // ─────────────────────────────────────────────────────────────
     // SETUP PAGE EVENT LISTENERS
     // ─────────────────────────────────────────────────────────────
 
@@ -1030,6 +1051,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // PR Submission
     document.getElementById('submit-pr-btn').addEventListener('click', submitPullRequest);
+
+    // Complete Course button
+    document.getElementById('complete-course-btn').addEventListener('click', function() {
+        // Mark Module 4 as complete without navigating away
+        if (!userProgress.completedModules.includes(4)) {
+            userProgress.completedModules.push(4);
+        }
+        saveProgress();
+        updateSidebar();
+
+        alert('🎉 Congratulations! You have completed the Open Source Learning course! Welcome to the open source community!');
+    });
 
 
     // ─────────────────────────────────────────────────────────────

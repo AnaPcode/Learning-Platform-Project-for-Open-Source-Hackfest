@@ -49,7 +49,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Text that appears in the browser tab -->
-    <title>Open Source Learning Platform</title>
+    <title>Open Source Learning</title>
 
     <!-- Links to external CSS file for styling -->
     <link rel="stylesheet" href="styles.css">
@@ -68,13 +68,19 @@
          Shows site title and current progress (Module X of 4)
     -->
     <header>
-        <h1>🚀 Open Source Learning Platform</h1>
+        <button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="Toggle sidebar">
+            <span class="hamburger"></span>
+            <span class="hamburger"></span>
+            <span class="hamburger"></span>
+        </button>
+
+        <h1>Open Source Learning</h1>
 
         <div id="progress-indicator">
-            <p>Progress: <span id="current-module-number">1</span> of 4</p>
+            <p>Progress: Module <span id="current-module-number">0</span> of 4</p>
             <!--
                 The <span> with id="current-module-number" will be updated by JavaScript
-                When you complete Module 1, JS changes "1" to "2"
+                When you complete Module 1, JS changes "0" to "1", etc.
                 Why a span? It's an inline element - perfect for updating just a number
             -->
         </div>
@@ -715,33 +721,14 @@
                 <p>You've learned everything - now it's time to DO it! You'll add your name to our Contributors wall by submitting an actual Pull Request.</p>
 
                 <div class="info-box">
-                    <h4>What You Need:</h4>
-                    <ol>
-                        <li><strong>GitHub Account</strong> - Don't have one? <a href="https://github.com/signup" target="_blank">Create it here</a> (takes 2 minutes)</li>
-                        <li><strong>GitHub Token</strong> - Follow the steps below</li>
-                    </ol>
-                </div>
-
-                <!--
-                    GITHUB TOKEN SETUP GUIDE
-
-                    Why do we need a token?
-                    - GitHub API requires authentication to create PRs
-                    - Tokens are safer than passwords
-                    - Students create their own (we don't store it)
-                    - This teaches them a REAL skill they'll use in actual development
-                -->
-                <div class="info-box">
-                    <h4>How to Get Your GitHub Token:</h4>
-                    <ol>
-                        <li>Click this link: <a href="https://github.com/settings/tokens/new" target="_blank">Create Token</a></li>
-                        <li>Token name: "Open Source Learning"</li>
-                        <li>Expiration: 7 days</li>
-                        <li>Check the box: ✅ <strong>public_repo</strong></li>
-                        <li>Click "Generate token" at the bottom</li>
-                        <li>Copy the token (starts with "ghp_")</li>
-                    </ol>
-                    <p class="help-text">⚠️ Save your token! You won't see it again after you leave the page.</p>
+                    <h4>What Will Happen:</h4>
+                    <ul>
+                        <li>🔄 We'll fork the repository to your GitHub account</li>
+                        <li>✏️ Add your name to the CONTRIBUTORS.md file</li>
+                        <li>💾 Commit the change with your name</li>
+                        <li>🚀 Create a Pull Request back to the main repository</li>
+                        <li>🎉 You'll have a real contribution on your GitHub profile!</li>
+                    </ul>
                 </div>
 
                 <!-- ═══════════════════════════════════════════════
@@ -750,7 +737,7 @@
 
                      When user clicks "Submit PR", JavaScript will:
                      1. Get values from these inputs
-                     2. Validate they're filled out
+                     2. Get GitHub token from localStorage (saved from home setup)
                      3. Call GitHub API to fork repo
                      4. Add their name to CONTRIBUTORS.md
                      5. Create PR from their fork to main repo
@@ -769,13 +756,6 @@
                         <label for="github-username">GitHub Username:</label>
                         <input type="text" id="github-username" placeholder="janesmithdev">
                         <!-- Just the username, not full URL -->
-                    </div>
-
-                    <!-- GitHub Token -->
-                    <div class="input-group">
-                        <label for="github-token">GitHub Token:</label>
-                        <input type="password" id="github-token" placeholder="ghp_...">
-                        <!-- type="password" hides the token -->
                     </div>
 
                     <!--
@@ -804,6 +784,15 @@
                     populate this div with celebration message and PR link
                 -->
                 <div id="completion-area"></div>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════
+                 COMPLETE COURSE BUTTON
+                 ═══════════════════════════════════════════════
+                 Allows students to mark the course as complete
+            -->
+            <div class="navigation">
+                <button id="complete-course-btn" class="next-btn big-btn">✅ Complete Course</button>
             </div>
 
         </section>
