@@ -718,14 +718,25 @@ async function submitPullRequest() {
             }
         });
 
-        // 409 = fork already exists, that's okay!
+        // Check if fork was successful
         if (!forkResponse.ok && forkResponse.status !== 409) {
-            throw new Error('Failed to fork repository');
+            const errorData = await forkResponse.json();
+            console.error('Fork failed:', errorData);
+            throw new Error(`Failed to fork repository: ${errorData.message || forkResponse.status}. Make sure your token has 'public_repo' permission.`);
         }
 
-        // Step 2: Wait for fork to complete
+        // If fork was created (201) or already exists (409), get fork details
+        let forkData;
+        if (forkResponse.status === 201) {
+            forkData = await forkResponse.json();
+            console.log('Fork created successfully:', forkData.full_name);
+        } else if (forkResponse.status === 409) {
+            console.log('Fork already exists, continuing...');
+        }
+
+        // Step 2: Wait for fork to complete (GitHub needs time to create the fork)
         updatePRStatus('⏳ Step 2/6: Waiting for fork to complete...');
-        await sleep(5000);  // Wait 5 seconds
+        await sleep(8000);  // Wait 8 seconds (increased from 5 for reliability)
 
         // Step 3: Check if user already completed (check main repo, not their fork)
         updatePRStatus('📖 Step 3/6: Checking if you already completed...');
@@ -764,7 +775,16 @@ async function submitPullRequest() {
         );
 
         if (!fileResponse.ok) {
-            throw new Error('Could not read CONTRIBUTORS.md file from your fork');
+            const errorData = await fileResponse.json();
+            console.error('Failed to read CONTRIBUTORS.md from fork:', errorData);
+            console.error('Attempted URL:', `https://api.github.com/repos/${githubUsername}/${YOUR_REPO}/contents/CONTRIBUTORS.md`);
+
+            // Provide helpful error message
+            if (fileResponse.status === 404) {
+                throw new Error(`Fork not found at ${githubUsername}/${YOUR_REPO}. The fork might still be creating. Please wait 30 seconds and try again, or check https://github.com/${githubUsername}/${YOUR_REPO}`);
+            } else {
+                throw new Error(`Could not read CONTRIBUTORS.md from your fork (Status: ${fileResponse.status}). Error: ${errorData.message || 'Unknown error'}`);
+            }
         }
 
         const fileData = await fileResponse.json();
