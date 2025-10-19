@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<!--
+    ═══════════════════════════════════════════════════════════════
+    OPEN SOURCE LEARNING PLATFORM - Main HTML File
+    ═══════════════════════════════════════════════════════════════
+
+    This file contains the structure and content for all 4 learning modules.
+
+    KEY CONCEPTS YOU'LL SEE IN THIS FILE:
+
+    1. IDs vs CLASSES:
+       - id="something" = UNIQUE identifier (only one element has this ID)
+       - class="something" = SHARED identifier (many elements can have same class)
+       - IDs are for JavaScript to target specific elements
+       - Classes are for CSS to style groups of elements
+
+    2. display: none
+       - Hides an element (it exists but you can't see it)
+       - JavaScript will change this to "display: block" to show hidden content
+
+    3. disabled attribute
+       - Makes buttons unclickable (grayed out)
+       - JavaScript removes this when requirements are met
+
+    4. How JavaScript will use this HTML:
+       - document.getElementById('module-1') finds elements by ID
+       - Listens for button clicks and form submissions
+       - Shows/hides sections by changing display property
+       - Updates text content dynamically
+
+    STRUCTURE OF THIS FILE:
+    - Header (always visible - shows progress)
+    - Sidebar (shows which modules are completed/locked)
+    - Main Content (contains all 4 modules)
+    - Scripts (loaded at the end)
+-->
+<html lang="en">
+<head>
+    <!--
+        ═══════════════════════════════════════════════════════════
+        HEAD SECTION - Metadata (not visible to users)
+        ═══════════════════════════════════════════════════════════
+    -->
+
+    <!-- Allows emojis and special characters to display correctly -->
+    <meta charset="UTF-8">
+
+    <!-- Makes the site responsive on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Text that appears in the browser tab -->
+    <title>Open Source Learning Platform</title>
+
+    <!-- Links to external CSS file for styling -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!--
+        ═══════════════════════════════════════════════════════════
+        BODY SECTION - Everything visible to users
+        ═══════════════════════════════════════════════════════════
+    -->
+
+    <!-- ═══════════════════════════════════════════════════════════
+         HEADER - Always visible at the top
+         ═══════════════════════════════════════════════════════════
+         Shows site title and current progress (Module X of 4)
+    -->
+    <header>
+        <h1>🚀 Open Source Learning Platform</h1>
+
+        <div id="progress-indicator">
+            <p>Progress: <span id="current-module-number">1</span> of 4</p>
+            <!--
+                The <span> with id="current-module-number" will be updated by JavaScript
+                When you complete Module 1, JS changes "1" to "2"
+                Why a span? It's an inline element - perfect for updating just a number
+            -->
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SIDEBAR - Progress tracker
+         ═══════════════════════════════════════════════════════════
+         Shows all 4 modules with status icons:
+         🔄 = Currently active
+         ✅ = Completed
+         🔒 = Locked (not accessible yet)
+    -->
+    <aside id="sidebar">
+        <h2>Your Journey</h2>
+        <ul id="module-list">
+            <!--
+                Each item has:
+                - Unique ID (for JavaScript to target it)
+                - Class indicating status (for CSS styling)
+                - data-section attribute (tells JS which section to show)
+                - Icon that changes based on progress
+                - Clickable (cursor becomes pointer on hover)
+            -->
+
+            <!-- Home starts as "active" -->
+            <li id="sidebar-home" class="active" data-section="home-setup">
+                <span class="icon">🏠</span> Home
+            </li>
+
+            <!-- Module 1 starts as "locked" (unlocks after setup) -->
+            <li id="sidebar-module-1" class="locked" data-section="module-1">
+                <span class="icon">🔒</span> Module 1: Understanding Open Source
+            </li>
+
+            <!-- Modules 2-4 start as "locked" -->
+            <li id="sidebar-module-2" class="locked" data-section="module-2">
+                <span class="icon">🔒</span> Module 2: Finding Your First Issue
+            </li>
+
+            <li id="sidebar-module-3" class="locked" data-section="module-3">
+                <span class="icon">🔒</span> Module 3: Making Your Contribution
+            </li>
+
+            <li id="sidebar-module-4" class="locked" data-section="module-4">
+                <span class="icon">🔒</span> Module 4: Join the Community
+            </li>
+        </ul>
+    </aside>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         MAIN CONTENT AREA
+         ═══════════════════════════════════════════════════════════
+         Contains:
+         1. API Setup Screen (shows first)
+         2. All 4 learning modules (hidden initially except Module 1)
+    -->
+    <main id="main-content">
+
+        <!-- ═══════════════════════════════════════════════════════
+             HOME / GETTING STARTED PAGE
+             ═══════════════════════════════════════════════════════
+             This appears FIRST when users visit the site.
+
+             WHY WE NEED TWO API KEYS:
+             1. Gemini API - For AI-powered personalized content
+             2. GitHub Token - For live project data + PR submission
+
+             After entering both keys, JavaScript:
+             1. Saves them to localStorage
+             2. Hides this section
+             3. Shows Module 1
+        -->
+        <section id="home-setup" class="active-section">
+
+            <!-- Welcome Header -->
+            <div class="welcome-header">
+                <h1>🚀 Welcome to Open Source Learning!</h1>
+                <p class="welcome-subtitle">Learn how to contribute to open source projects through personalized, AI-powered lessons.</p>
+            </div>
+
+            <!-- What This Platform Does -->
+            <div class="content-block">
+                <h3>What You'll Learn:</h3>
+                <ul>
+                    <li>✅ What open source is and why it matters</li>
+                    <li>✅ How to find beginner-friendly projects</li>
+                    <li>✅ The complete contribution workflow (fork, clone, PR)</li>
+                    <li>✅ How to submit your FIRST real Pull Request!</li>
+                </ul>
+            </div>
+
+            <!-- Why We Need API Keys -->
+            <div class="content-block personalization-block">
+                <h3>🔑 Before We Start: Get Your Free Access</h3>
+                <p>This platform uses two free tools to personalize your learning experience. Don't worry - we'll walk you through getting access to both!</p>
+
+                <div style="margin-top: 20px;">
+                    <p><strong>🤖 Google Gemini AI</strong> - Creates custom explanations based on YOUR interests (game dev, web dev, etc.)</p>
+                    <p><strong>🔍 GitHub</strong> - Shows you real, live open source projects and lets you submit your completion PR</p>
+                </div>
+            </div>
+
+            <!-- Gemini API Key Setup -->
+            <div class="content-block">
+                <h3>Step 1: Get Your Gemini API Key</h3>
+
+                <div class="info-box">
+                    <h4>How to Get It (takes 2 minutes):</h4>
+                    <ol>
+                        <li>Click this link: <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a></li>
+                        <li>Sign in with your Google account</li>
+                        <li>Click "Create API Key" (blue button in the top right corner)</li>
+                        <li>A popup will appear. Name your key (e.g., "OpenSourceLearningKey")</li>
+                        <li><strong>Important:</strong> For "Choose an imported project", click <strong>"Create a new project"</strong>
+                            <ul style="margin-top: 8px; color: #6B7280; font-size: 14px;">
+                                <li><strong>Why?</strong> Google requires API keys to be linked to a project for organization and usage tracking</li>
+                                <li><strong>Don't worry:</strong> It's completely free! The project is just a container for your API key</li>
+                                <li>You'll need to name your project (e.g., "OpenSourceLearningProject" or any name you like)</li>
+                            </ul>
+                        </li>
+                        <li>After the new project is created, click "Create Key" and wait a few seconds for the API key to be generated</li>
+                        <li>Copy the key that appears (starts with "AIza...")</li>
+                        <li>Paste it below</li>
+                    </ol>
+                </div>
+
+                <div class="input-group">
+                    <label for="gemini-api-key">Your Gemini API Key:</label>
+                    <input type="password" id="gemini-api-key" placeholder="AIza...">
+                    <p class="help-text">Stored locally on your device. Only sent to Google's Gemini API.</p>
+                </div>
+            </div>
+
+            <!-- GitHub Token Setup -->
+            <div class="content-block">
+                <h3>Step 2: Get Your GitHub Token</h3>
+
+                <div class="info-box">
+                    <h4>Why You Need This:</h4>
+                    <p>This lets us show you live, up-to-date open source projects. You'll also use this same token to submit your completion Pull Request at the end of the course!</p>
+
+                    <h4>How to Get It (takes 1 minute):</h4>
+                    <ol>
+                        <li>Don't have a GitHub account? <a href="https://github.com/signup" target="_blank">Create one here</a> (free, takes 2 minutes)</li>
+                        <li>Click this link: <a href="https://github.com/settings/tokens/new" target="_blank">Create Token</a></li>
+                        <li>Under "Note", put what the token is for (e.g., "OpenSourceLearningToken")</li>
+                        <li>Expiration: Choose "7 days" or "30 days"</li>
+                        <li>Under "Select scopes", check the box: ✅ <strong>public_repo</strong>
+                            <ul style="margin-top: 8px; color: #6B7280; font-size: 14px;">
+                                <li><strong>Why?</strong> This allows the app to fork public repositories and create pull requests on your behalf</li>
+                            </ul>
+                        </li>
+                        <li>Scroll down and click "Generate token"</li>
+                        <li>Copy the token (starts with "ghp_")</li>
+                        <li>Paste it below</li>
+                    </ol>
+                    <p class="help-text">⚠️ <strong>Important:</strong> Save your token somewhere safe! GitHub only shows it once.</p>
+                </div>
+
+                <div class="input-group">
+                    <label for="github-token">Your GitHub Token:</label>
+                    <input type="password" id="github-token" placeholder="ghp_...">
+                    <p class="help-text">Stored locally on your device. Only used to access GitHub's public API.</p>
+                </div>
+            </div>
+
+            <!-- Encouragement Box -->
+            <div class="content-block highlight-block">
+                <h3>💡 Learning Moment!</h3>
+                <p>Getting API keys and tokens might feel unfamiliar, but this is exactly what developers do when starting a new project!</p>
+                <p>You're learning a real skill right now. Getting comfortable with documentation and figuring things out is part of the journey. You've got this! 🌟</p>
+            </div>
+
+            <!-- Start Button -->
+            <div class="navigation">
+                <button id="start-learning-btn" class="primary-btn big-btn" disabled>🚀 Let's Start Learning!</button>
+                <p class="help-text" id="setup-status" style="text-align: center; margin-top: 12px; font-size: 14px;"></p>
+            </div>
+
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════
+             MODULE 1: Understanding Open Source
+             ═══════════════════════════════════════════════════════
+
+             STRUCTURE OF EACH MODULE:
+             1. Module Header (title + description)
+             2. Static Content (educational text - same for everyone)
+             3. Personalization Question (dropdown + button)
+             4. AI-Generated Content (appears after button click)
+             5. Live GitHub Data (appears with AI content)
+             6. Quiz (multiple choice question)
+             7. Navigation (Previous/Next buttons)
+
+             All 4 modules follow this same pattern!
+
+             STARTS HIDDEN - JavaScript shows it when user clicks "Let's Start Learning!"
+        -->
+        <section id="module-1" class="module-section" style="display: none;">
+
+            <!-- ─────────────────────────────────────────────────────
+                 1. MODULE HEADER
+                 ───────────────────────────────────────────────────── -->
+            <div class="module-header">
+                <h2>Module 1: Understanding Open Source 🌍</h2>
+                <p class="module-description">Duration: ~10 minutes | Build foundational knowledge</p>
+            </div>
+
+            <!-- ─────────────────────────────────────────────────────
+                 2. STATIC LEARNING CONTENT
+                 ─────────────────────────────────────────────────────
+                 This content is the same for all users.
+                 It provides the core educational material.
+            -->
+            <div class="content-block">
+                <h3>📖 What is Open Source?</h3>
+                <p>Open source software is code that anyone can view, use, modify, and share. Unlike proprietary software (like Microsoft Word), open source projects make their code publicly available.</p>
+
+                <p><strong>Why it matters:</strong></p>
+                <ul>
+                    <li><strong>Powers the internet:</strong> Most websites run on open source (Linux, Apache, etc.)</li>
+                    <li><strong>Free to use:</strong> Anyone can use it without paying</li>
+                    <li><strong>Community-driven:</strong> Thousands of developers collaborate globally</li>
+                    <li><strong>Career benefits:</strong> Contributing builds your portfolio and network</li>
+                </ul>
+
+                <p><strong>Popular Open Source Licenses:</strong></p>
+                <ul>
+                    <li><strong>MIT:</strong> Very permissive - do almost anything with the code</li>
+                    <li><strong>GPL:</strong> Must share your modifications</li>
+                    <li><strong>Apache 2.0:</strong> Similar to MIT but with patent protection</li>
+                </ul>
+            </div>
+
+            <!-- ─────────────────────────────────────────────────────
+                 3. PERSONALIZATION QUESTION
+                 ─────────────────────────────────────────────────────
+                 User selects their interest area from dropdown.
+                 When they click the button:
+                 - JavaScript gets their selection
+                 - Calls Gemini API with personalized prompt
+                 - Displays AI response below
+            -->
+            <div class="content-block personalization-block">
+                <h3>🎯 Personalize Your Learning</h3>
+                <p>What tech area interests you most?</p>
+
+                <!--
+                    SELECT (Dropdown menu):
+                    - id="interest-select" for JavaScript to get the selected value
+                    - Each <option> has a "value" (what JS receives) and text (what user sees)
+                -->
+                <select id="interest-select">
+                    <option value="">-- Select One --</option>
+                    <!-- Empty value means "nothing selected yet" -->
+
+                    <option value="game-development">Game Development</option>
+                    <!-- User sees: "Game Development" -->
+                    <!-- JavaScript gets: "game-development" -->
+
+                    <option value="web-development">Web Development</option>
+                    <option value="data-science">Data Science/AI</option>
+                    <option value="mobile-apps">Mobile Apps</option>
+                    <option value="devops">DevOps/Tools</option>
+                    <option value="exploring">Just Exploring</option>
+                </select>
+
+                <!--
+                    BUTTON:
+                    - Starts "disabled" (can't click it)
+                    - JavaScript enables it when user selects from dropdown
+                    - Clicking triggers API call to Gemini
+                -->
+                <button id="generate-personalized-btn" class="primary-btn" disabled>Generate My Personalized Content</button>
+            </div>
+
+            <!-- ─────────────────────────────────────────────────────
+                 4. AI-GENERATED CONTENT
+                 ─────────────────────────────────────────────────────
+                 Starts hidden (display: none).
+                 JavaScript will:
+                 1. Make it visible when button is clicked
+                 2. Show "loading" message
+                 3. Call Gemini API
+                 4. Replace loading message with AI response
+            -->
+            <div id="ai-content-1" class="content-block ai-content" style="display: none;">
+                <h3>🤖 Your Personalized Introduction</h3>
+                <div id="ai-response-1" class="ai-response">
+                    <!-- Loading message shown while waiting for API -->
+                    <p class="loading">Generating your personalized content...</p>
+                    <!-- JavaScript will replace this with actual AI response -->
+                </div>
+            </div>
+
+            <!-- ─────────────────────────────────────────────────────
+                 5. LIVE GITHUB DATA
+                 ─────────────────────────────────────────────────────
+                 Starts hidden.
+                 Shows popular GitHub projects in user's interest area.
+                 JavaScript populates this from github-data.js file.
+            -->
+            <div id="github-data-1" class="content-block github-data" style="display: none;">
+                <h3>🔍 Popular Open Source Projects in Your Field</h3>
+                <div id="projects-list-1">
+                    <!-- JavaScript will add project list here -->
+                </div>
+            </div>
+
+            <!-- ─────────────────────────────────────────────────────
+                 6. QUIZ
+                 ─────────────────────────────────────────────────────
+                 Multiple choice question to check understanding.
+                 User must answer correctly to unlock "Next Module" button.
+            -->
+            <div class="content-block quiz-block">
+                <h3>✅ Knowledge Check</h3>
+                <p class="quiz-question">What does "open source" mean?</p>
+
+                <!--
+                    RADIO BUTTONS:
+                    - type="radio" = only one can be selected
+                    - name="quiz-1" groups these together (all Module 1 quiz options)
+                    - value is what JavaScript reads (a, b, or c)
+                    - Correct answer is "b"
+                -->
+                <div class="quiz-options">
+                    <label>
+                        <input type="radio" name="quiz-1" value="a">
+                        Source code that is free to download but cannot be modified
+                    </label>
+                    <label>
+                        <input type="radio" name="quiz-1" value="b">
+                        Source code that anyone can view, use, modify, and share
+                    </label>
+                    <label>
+                        <input type="radio" name="quiz-1" value="c">
+                        Software that only works on open platforms like Linux
+                    </label>
+                </div>
+
+                <!-- Button to check if answer is correct -->
+                <button id="check-quiz-1" class="secondary-btn">Check Answer</button>
+
+                <!-- Feedback message appears here after checking answer -->
+                <p id="quiz-feedback-1" class="quiz-feedback"></p>
+            </div>
+
+            <!-- ─────────────────────────────────────────────────────
+                 7. NAVIGATION
+                 ─────────────────────────────────────────────────────
+                 Next button starts disabled.
+                 JavaScript enables it when quiz is answered correctly.
+            -->
+            <div class="navigation">
+                <button id="next-module-1" class="next-btn" disabled>Next Module →</button>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════
+             MODULE 2: Finding Your First Issue
+             ═══════════════════════════════════════════════════════
+
+             Follows the same 7-part structure as Module 1:
+             1. Header
+             2. Static content
+             3. Personalization (skill level question)
+             4. AI content
+             5. GitHub data (good first issues)
+             6. Quiz
+             7. Navigation (Previous + Next buttons)
+        -->
+        <section id="module-2" class="module-section" style="display: none;">
+            <!-- Starts hidden - JavaScript shows it when Module 1 is complete -->
+
+            <div class="module-header">
+                <h2>Module 2: Finding Your First Issue 🔍</h2>
+                <p class="module-description">Duration: ~15 minutes | Learn to identify good contributions</p>
+            </div>
+
+            <!-- Static Educational Content -->
+            <div class="content-block">
+                <h3>📖 Understanding GitHub Labels</h3>
+                <p>GitHub uses labels to organize issues. Here are the most important ones for beginners:</p>
+                <ul>
+                    <li><strong>"good first issue":</strong> Perfect for newcomers</li>
+                    <li><strong>"beginner-friendly":</strong> Doesn't require deep knowledge</li>
+                    <li><strong>"documentation":</strong> Help improve docs (great for beginners!)</li>
+                    <li><strong>"help wanted":</strong> Maintainers are looking for contributors</li>
+                </ul>
+
+                <h3>What Makes a Good First Issue?</h3>
+                <ul>
+                    <li>✅ Clear description of what needs to be done</li>
+                    <li>✅ Active project (recent commits)</li>
+                    <li>✅ Friendly maintainers who respond to questions</li>
+                    <li>✅ Good documentation</li>
+                </ul>
+
+                <h3>Red Flags to Avoid:</h3>
+                <ul>
+                    <li>❌ No activity in 6+ months</li>
+                    <li>❌ Vague issue descriptions</li>
+                    <li>❌ Lots of open PRs with no maintainer response</li>
+                    <li>❌ Issues that require deep knowledge of the codebase</li>
+                </ul>
+            </div>
+
+            <!-- Personalization: Skill Level -->
+            <div class="content-block personalization-block">
+                <h3>🎯 What's Your Coding Skill Level?</h3>
+                <select id="skill-select">
+                    <option value="">-- Select One --</option>
+                    <option value="total-beginner">Total beginner (never coded)</option>
+                    <option value="some-experience">Some coding experience</option>
+                    <option value="comfortable">Comfortable with programming</option>
+                    <option value="experienced">Experienced developer</option>
+                </select>
+                <button id="generate-skill-advice-btn" class="primary-btn" disabled>Get Personalized Advice</button>
+            </div>
+
+            <!-- AI-Generated Skill-Specific Advice -->
+            <div id="ai-content-2" class="content-block ai-content" style="display: none;">
+                <h3>🤖 Advice for Your Skill Level</h3>
+                <div id="ai-response-2" class="ai-response">
+                    <p class="loading">Generating your personalized advice...</p>
+                </div>
+            </div>
+
+            <!-- GitHub Issues List -->
+            <div id="github-data-2" class="content-block github-data" style="display: none;">
+                <h3>🔍 Good First Issues in Your Field</h3>
+                <div id="issues-list-2">
+                    <!-- JavaScript populates with issue examples -->
+                </div>
+            </div>
+
+            <!-- Quiz for Module 2 -->
+            <div class="content-block quiz-block">
+                <h3>✅ Knowledge Check</h3>
+                <p class="quiz-question">What label should you look for when finding your first issue?</p>
+                <div class="quiz-options">
+                    <label>
+                        <input type="radio" name="quiz-2" value="a">
+                        "critical-bug"
+                    </label>
+                    <label>
+                        <input type="radio" name="quiz-2" value="b">
+                        "good first issue"
+                        <!-- Correct answer -->
+                    </label>
+                    <label>
+                        <input type="radio" name="quiz-2" value="c">
+                        "needs-expert-review"
+                    </label>
+                </div>
+                <button id="check-quiz-2" class="secondary-btn">Check Answer</button>
+                <p id="quiz-feedback-2" class="quiz-feedback"></p>
+            </div>
+
+            <!-- Navigation: Module 2 has BOTH Previous and Next -->
+            <div class="navigation">
+                <button id="prev-module-2" class="prev-btn">← Previous Module</button>
+                <button id="next-module-2" class="next-btn" disabled>Next Module →</button>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════
+             MODULE 3: Making Your First Contribution
+             ═══════════════════════════════════════════════════════
+
+             Teaches the Git workflow: Fork → Clone → Edit → Commit → PR
+        -->
+        <section id="module-3" class="module-section" style="display: none;">
+
+            <div class="module-header">
+                <h2>Module 3: Making Your First Contribution 🚀</h2>
+                <p class="module-description">Duration: ~20 minutes | Step-by-step contribution process</p>
+            </div>
+
+            <!-- Static Content: Git Workflow -->
+            <div class="content-block">
+                <h3>📖 The Git Workflow</h3>
+                <p>Contributing to open source follows these steps:</p>
+
+                <!--
+                    ORDERED LIST (numbered):
+                    <ol> creates 1, 2, 3, 4...
+                    <ul> would create bullet points
+                -->
+                <ol class="workflow-steps">
+                    <li><strong>Fork:</strong> Create your own copy of the project</li>
+                    <li><strong>Clone:</strong> Download it to your computer</li>
+                    <li><strong>Branch:</strong> Create a new branch for your changes</li>
+                    <li><strong>Edit:</strong> Make your changes to the code</li>
+                    <li><strong>Commit:</strong> Save your changes with a message</li>
+                    <li><strong>Push:</strong> Upload your changes to GitHub</li>
+                    <li><strong>Pull Request (PR):</strong> Ask the project to include your changes</li>
+                </ol>
+
+                <h3>Writing Good Commit Messages</h3>
+                <div class="code-example">
+                    <p><strong>Good:</strong> "Fix typo in README installation section"</p>
+                    <p><strong>Bad:</strong> "fixed stuff"</p>
+                </div>
+                <p><strong>Tips:</strong></p>
+                <ul>
+                    <li>Start with a verb: Fix, Add, Update, Remove</li>
+                    <li>Be specific about what changed</li>
+                    <li>Keep it under 50 characters</li>
+                </ul>
+
+                <h3>PR Etiquette</h3>
+                <ul>
+                    <li>✅ Be polite and professional</li>
+                    <li>✅ Respond to feedback promptly</li>
+                    <li>✅ Make requested changes</li>
+                    <li>✅ Say thank you!</li>
+                </ul>
+            </div>
+
+            <!-- Personalization: Git Experience Level -->
+            <div class="content-block personalization-block">
+                <h3>🎯 Have You Used Git Before?</h3>
+                <select id="git-select">
+                    <option value="">-- Select One --</option>
+                    <option value="never-used">Never used it</option>
+                    <option value="used-a-little">Used it a little</option>
+                    <option value="pretty-comfortable">Pretty comfortable</option>
+                </select>
+                <button id="generate-git-help-btn" class="primary-btn" disabled>Get Git Guidance</button>
+            </div>
+
+            <!-- AI-Generated Git Workflow Guide -->
+            <div id="ai-content-3" class="content-block ai-content" style="display: none;">
+                <h3>🤖 Git Workflow for Your Level</h3>
+                <div id="ai-response-3" class="ai-response">
+                    <p class="loading">Generating your personalized workflow guide...</p>
+                </div>
+            </div>
+
+            <!-- Quiz for Module 3 -->
+            <div class="content-block quiz-block">
+                <h3>✅ Knowledge Check</h3>
+                <p class="quiz-question">What's the first step in contributing to an open source project?</p>
+                <div class="quiz-options">
+                    <label>
+                        <input type="radio" name="quiz-3" value="a">
+                        Create a pull request immediately
+                    </label>
+                    <label>
+                        <input type="radio" name="quiz-3" value="b">
+                        Fork the repository to your account
+                        <!-- Correct answer -->
+                    </label>
+                    <label>
+                        <input type="radio" name="quiz-3" value="c">
+                        Email the project owner
+                    </label>
+                </div>
+                <button id="check-quiz-3" class="secondary-btn">Check Answer</button>
+                <p id="quiz-feedback-3" class="quiz-feedback"></p>
+            </div>
+
+            <!-- Navigation -->
+            <div class="navigation">
+                <button id="prev-module-3" class="prev-btn">← Previous Module</button>
+                <button id="next-module-3" class="next-btn" disabled>Next Module →</button>
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════
+             MODULE 4: Join the Community
+             ═══════════════════════════════════════════════════════
+
+             THE BIG MOMENT: Students submit their first REAL Pull Request!
+
+             This module is special because it doesn't just teach - it has
+             students actually DO the thing they learned about.
+
+             They will:
+             1. Get a GitHub Personal Access Token
+             2. Fill out a form with their name and GitHub username
+             3. Click "Submit PR"
+             4. JavaScript will use GitHub API to:
+                - Fork this repo to their account
+                - Add their name to CONTRIBUTORS.md
+                - Create a PR back to this repo
+             5. They get a REAL contribution on their GitHub profile!
+        -->
+        <section id="module-4" class="module-section" style="display: none;">
+
+            <div class="module-header">
+                <h2>Module 4: Join the Community 🎉</h2>
+                <p class="module-description">Duration: ~10 minutes | Submit your first real PR!</p>
+            </div>
+
+            <!-- Static Content: Open Source Etiquette -->
+            <div class="content-block">
+                <h3>📖 Open Source Etiquette</h3>
+                <ul>
+                    <li><strong>Be respectful:</strong> Remember, maintainers are volunteers</li>
+                    <li><strong>Read the guidelines:</strong> Check CONTRIBUTING.md before submitting</li>
+                    <li><strong>Ask questions:</strong> Don't be afraid to ask for help</li>
+                    <li><strong>Be patient:</strong> Reviews can take days or weeks</li>
+                    <li><strong>Give back:</strong> Help others once you're comfortable</li>
+                </ul>
+
+                <h3>Continuing Your Journey</h3>
+                <p>After this course, here's what to do:</p>
+                <ul>
+                    <li>Start with documentation fixes (typos, clarity improvements)</li>
+                    <li>Join project Discord/Slack channels</li>
+                    <li>Follow projects you're interested in</li>
+                    <li>Contribute regularly - even small PRs matter!</li>
+                </ul>
+            </div>
+
+            <!-- AI-Generated Next Steps -->
+            <div id="ai-content-4" class="content-block ai-content">
+                <h3>🤖 Your Personalized Next Steps</h3>
+                <button id="generate-next-steps-btn" class="primary-btn">Get My Personalized Roadmap</button>
+                <div id="ai-response-4" class="ai-response" style="display: none;">
+                    <p class="loading">Generating your personalized next steps...</p>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════
+                 THE BIG MOMENT: PR SUBMISSION
+                 ═══════════════════════════════════════════════════
+
+                 This is where students apply everything they learned.
+                 They'll submit an actual Pull Request using GitHub API.
+            -->
+            <div class="content-block highlight-block">
+                <h3>🚀 Submit Your First Real Pull Request!</h3>
+                <p>You've learned everything - now it's time to DO it! You'll add your name to our Contributors wall by submitting an actual Pull Request.</p>
+
+                <div class="info-box">
+                    <h4>What You Need:</h4>
+                    <ol>
+                        <li><strong>GitHub Account</strong> - Don't have one? <a href="https://github.com/signup" target="_blank">Create it here</a> (takes 2 minutes)</li>
+                        <li><strong>GitHub Token</strong> - Follow the steps below</li>
+                    </ol>
+                </div>
+
+                <!--
+                    GITHUB TOKEN SETUP GUIDE
+
+                    Why do we need a token?
+                    - GitHub API requires authentication to create PRs
+                    - Tokens are safer than passwords
+                    - Students create their own (we don't store it)
+                    - This teaches them a REAL skill they'll use in actual development
+                -->
+                <div class="info-box">
+                    <h4>How to Get Your GitHub Token:</h4>
+                    <ol>
+                        <li>Click this link: <a href="https://github.com/settings/tokens/new" target="_blank">Create Token</a></li>
+                        <li>Token name: "Open Source Learning"</li>
+                        <li>Expiration: 7 days</li>
+                        <li>Check the box: ✅ <strong>public_repo</strong></li>
+                        <li>Click "Generate token" at the bottom</li>
+                        <li>Copy the token (starts with "ghp_")</li>
+                    </ol>
+                    <p class="help-text">⚠️ Save your token! You won't see it again after you leave the page.</p>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════
+                     PR SUBMISSION FORM
+                     ═══════════════════════════════════════════════
+
+                     When user clicks "Submit PR", JavaScript will:
+                     1. Get values from these inputs
+                     2. Validate they're filled out
+                     3. Call GitHub API to fork repo
+                     4. Add their name to CONTRIBUTORS.md
+                     5. Create PR from their fork to main repo
+                -->
+                <div class="pr-submission-form">
+                    <h4>Submit Your PR:</h4>
+
+                    <!-- Student's Name -->
+                    <div class="input-group">
+                        <label for="student-name">Your Name:</label>
+                        <input type="text" id="student-name" placeholder="Jane Smith">
+                    </div>
+
+                    <!-- GitHub Username -->
+                    <div class="input-group">
+                        <label for="github-username">GitHub Username:</label>
+                        <input type="text" id="github-username" placeholder="janesmithdev">
+                        <!-- Just the username, not full URL -->
+                    </div>
+
+                    <!-- GitHub Token -->
+                    <div class="input-group">
+                        <label for="github-token">GitHub Token:</label>
+                        <input type="password" id="github-token" placeholder="ghp_...">
+                        <!-- type="password" hides the token -->
+                    </div>
+
+                    <!--
+                        SUBMIT BUTTON
+                        When clicked, JavaScript will execute the PR submission flow
+                    -->
+                    <button id="submit-pr-btn" class="primary-btn big-btn">🚀 Submit My First PR!</button>
+                </div>
+
+                <!--
+                    STATUS MESSAGES
+                    Hidden initially. JavaScript shows this and updates the text
+                    to show progress:
+                    "Forking repository..."
+                    "Adding your name..."
+                    "Creating pull request..."
+                    etc.
+                -->
+                <div id="pr-status" class="status-messages" style="display: none;">
+                    <p id="status-text">Processing...</p>
+                </div>
+
+                <!--
+                    SUCCESS MESSAGE
+                    After PR is successfully created, JavaScript will
+                    populate this div with celebration message and PR link
+                -->
+                <div id="completion-area"></div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         JAVASCRIPT FILES
+         ═══════════════════════════════════════════════════════════
+
+         Loaded at the END of <body> (after all HTML elements exist)
+
+         WHY AT THE END?
+         JavaScript needs to find elements by ID. If we load JavaScript
+         BEFORE the HTML elements exist, JavaScript can't find them!
+
+         Think of it like: You can't turn on the lights (JavaScript)
+         until the walls are built (HTML)
+    -->
+
+    <!-- github-api.js: Functions for fetching live GitHub data -->
+    <script src="github-api.js"></script>
+
+    <!-- script.js: Main application logic -->
+    <script src="script.js"></script>
+
+</body>
+</html>

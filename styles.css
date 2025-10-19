@@ -1,0 +1,1091 @@
+/*
+    ═══════════════════════════════════════════════════════════════
+    OPEN SOURCE LEARNING PLATFORM - Stylesheet
+    ═══════════════════════════════════════════════════════════════
+
+    This file styles all the HTML elements in index.html.
+
+    KEY CSS CONCEPTS IN THIS FILE:
+
+    1. CSS SELECTORS:
+       - element { } = Styles ALL elements of that type (e.g., body, h1)
+       - .classname { } = Styles elements with that class
+       - #idname { } = Styles ONE element with that ID
+       - element.class { } = Styles only that element type with that class
+
+    2. THE BOX MODEL:
+       Every element is a box with:
+       - Content (the text/image)
+       - Padding (space inside the box, around content)
+       - Border (line around the padding)
+       - Margin (space outside the box, between other elements)
+
+    3. DISPLAY PROPERTY:
+       - block = Takes full width, stacks vertically (like <div>, <p>)
+       - inline = Takes only needed width, flows horizontally (like <span>)
+       - none = Element is hidden (JavaScript uses this to show/hide modules)
+
+    4. POSITIONING:
+       - relative = Positioned relative to normal position
+       - absolute = Positioned relative to parent element
+       - fixed = Stays in place when scrolling
+
+    5. FLEXBOX:
+       - display: flex = Makes children arrange in flexible rows/columns
+       - justify-content = Horizontal alignment
+       - align-items = Vertical alignment
+*/
+
+/* ═══════════════════════════════════════════════════════════════
+   GLOBAL STYLES
+   ═══════════════════════════════════════════════════════════════
+   These apply to the entire page
+*/
+
+/* Reset default browser styles to give us a clean slate */
+* {
+    margin: 0;           /* Remove default spacing */
+    padding: 0;          /* Remove default padding */
+    box-sizing: border-box;  /* Width includes padding and border (easier math!) */
+}
+
+/*
+    BOX-SIZING EXPLAINED:
+    Without it: width=200px + padding=20px = element is actually 220px wide
+    With it: width=200px includes everything = element is exactly 200px wide
+*/
+
+body {
+    /* Font stack: browser tries first font, if not available tries next one */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+
+    font-size: 16px;                /* Base font size (1rem = 16px) */
+    line-height: 1.6;               /* Space between lines (1.6x font size) */
+    color: #111827;                 /* Dark gray text (almost black) */
+    background-color: #F9FAFB;      /* Light gray background */
+}
+
+/*
+    WHY LINE-HEIGHT 1.6?
+    Makes text easier to read. Too tight (1.0) is cramped, too loose (2.0) is scattered.
+    1.5-1.6 is the sweet spot for body text.
+*/
+
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER - Top bar with title and progress
+   ═══════════════════════════════════════════════════════════════
+*/
+
+header {
+    background-color: #4F46E5;      /* Indigo - conveys trust and learning */
+    color: white;
+    padding: 20px 40px;             /* 20px top/bottom, 40px left/right */
+
+    display: flex;                  /* Makes child elements flexible */
+    justify-content: space-between; /* Pushes title left, progress right */
+    align-items: center;            /* Vertically centers content */
+
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);  /* Subtle shadow for depth */
+}
+
+/*
+    FLEXBOX IN ACTION:
+    Without flex: Elements stack vertically
+    With flex + justify-content: space-between:
+    [Title]                                    [Progress: 1 of 4]
+*/
+
+header h1 {
+    font-size: 24px;
+    font-weight: 600;               /* Semi-bold (100-900 scale) */
+}
+
+#progress-indicator {
+    font-size: 14px;
+    background-color: rgba(255, 255, 255, 0.2);  /* Semi-transparent white */
+    padding: 8px 16px;
+    border-radius: 20px;            /* Rounded pill shape */
+}
+
+/*
+    RGBA COLORS:
+    rgba(red, green, blue, alpha)
+    - rgb values: 0-255
+    - alpha (transparency): 0 (invisible) to 1 (solid)
+    - rgba(255, 255, 255, 0.2) = 20% opaque white
+*/
+
+
+/* ═══════════════════════════════════════════════════════════════
+   SIDEBAR - Progress tracker on the left
+   ═══════════════════════════════════════════════════════════════
+*/
+
+#sidebar {
+    position: fixed;                /* Stays in place when scrolling */
+    left: 0;
+    top: 80px;                      /* Below header (header is ~80px tall) */
+    width: 280px;
+    height: calc(100vh - 80px);     /* Full height minus header */
+
+    background-color: white;
+    padding: 30px 20px;
+    box-shadow: 2px 0 4px rgba(0,0,0,0.05);  /* Shadow on right edge */
+
+    overflow-y: auto;               /* Scroll if content is too tall */
+}
+
+/*
+    CALC() FUNCTION:
+    Lets you do math with different units!
+    100vh = 100% of viewport height (full screen)
+    calc(100vh - 80px) = full screen minus 80 pixels
+*/
+
+#sidebar h2 {
+    font-size: 18px;
+    color: #4F46E5;                 /* Match header color */
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #E5E7EB;  /* Light gray divider */
+}
+
+#module-list {
+    list-style: none;               /* Remove bullet points */
+}
+
+#module-list li {
+    padding: 12px 10px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;                /* Hand cursor - indicates clickable! */
+    transition: all 0.3s ease;      /* Smooth color changes */
+}
+
+/*
+    CURSOR: POINTER
+    Changes mouse cursor to a hand (👆) when hovering
+    This tells users "hey, you can click me!"
+*/
+
+/* Hover effect for clickable items (except locked) */
+#module-list li:not(.locked):hover {
+    transform: translateX(4px);     /* Slide right slightly on hover */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);  /* Add shadow */
+}
+
+/*
+    :NOT(.locked) SELECTOR
+    Selects all <li> elements that DON'T have class="locked"
+    So locked items won't slide when you hover over them
+*/
+
+/*
+    TRANSITION:
+    Makes property changes gradual instead of instant
+    all = animate all properties that change
+    0.3s = animation takes 0.3 seconds
+    ease = starts slow, speeds up, ends slow
+*/
+
+/* Different states for modules */
+
+/* Active module (currently learning) */
+#module-list li.active {
+    background-color: #EEF2FF;      /* Light indigo */
+    color: #4F46E5;                 /* Dark indigo text */
+    font-weight: 600;
+    border-left: 4px solid #4F46E5; /* Accent bar on left */
+}
+
+/* Completed module */
+#module-list li.completed {
+    background-color: #D1FAE5;      /* Light green */
+    color: #059669;                 /* Dark green text */
+}
+
+/* Locked module (not accessible yet) */
+#module-list li.locked {
+    color: #9CA3AF;                 /* Gray text */
+    opacity: 0.6;                   /* Slightly faded */
+    cursor: not-allowed;            /* "No entry" cursor for locked items */
+}
+
+/*
+    CURSOR: NOT-ALLOWED
+    Shows ⛔ cursor when hovering over locked items
+    Tells users "you can't click this yet"
+*/
+
+/* Icon styling */
+.icon {
+    display: inline-block;
+    width: 24px;                    /* Fixed width for alignment */
+    text-align: center;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   MAIN CONTENT AREA
+   ═══════════════════════════════════════════════════════════════
+*/
+
+#main-content {
+    margin-left: 280px;             /* Makes room for fixed sidebar */
+    padding: 40px 60px;
+    max-width: 900px;               /* Readable line length (60-90 characters) */
+}
+
+/*
+    WHY MAX-WIDTH?
+    Long lines are hard to read. Try reading text that spans your whole monitor!
+    900px keeps paragraphs at a comfortable reading width.
+*/
+
+
+/* ═══════════════════════════════════════════════════════════════
+   WELCOME HEADER (Home Page)
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.welcome-header {
+    text-align: center;
+    padding: 40px 20px;
+    margin-bottom: 32px;
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+}
+
+.welcome-header h1 {
+    font-size: 36px;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.welcome-subtitle {
+    font-size: 18px;
+    opacity: 0.95;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   CONTENT BLOCKS - Reusable sections
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.content-block {
+    background-color: white;
+    padding: 30px;
+    margin-bottom: 24px;
+    border-radius: 12px;            /* Rounded corners */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);  /* Subtle shadow */
+}
+
+.content-block h3 {
+    color: #1F2937;                 /* Very dark gray */
+    margin-bottom: 16px;
+    font-size: 20px;
+}
+
+.content-block p {
+    margin-bottom: 12px;
+}
+
+.content-block ul,
+.content-block ol {
+    margin-left: 24px;              /* Indent lists */
+    margin-bottom: 12px;
+}
+
+.content-block li {
+    margin-bottom: 8px;
+}
+
+/* Special highlighted block (used in Module 4 for PR submission) */
+.highlight-block {
+    border: 3px solid #F59E0B;      /* Orange border */
+    background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+    /* Gradient background: light yellow to slightly darker yellow */
+}
+
+/*
+    LINEAR-GRADIENT:
+    Creates a smooth color transition
+    135deg = diagonal direction
+    0% = start color, 100% = end color
+*/
+
+
+/* ═══════════════════════════════════════════════════════════════
+   MODULE SECTIONS
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.module-section {
+    animation: fadeIn 0.5s ease;    /* Fade in when module appears */
+}
+
+/*
+    ANIMATIONS:
+    Defined at bottom of file with @keyframes
+    fadeIn gradually changes opacity from 0 (invisible) to 1 (visible)
+*/
+
+.module-header {
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    /* Indigo to purple gradient */
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+}
+
+.module-header h2 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.module-description {
+    font-size: 14px;
+    opacity: 0.9;                   /* Slightly transparent */
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   FORMS AND INPUTS
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;                 /* Takes full width, forces next element below */
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #374151;
+}
+
+/* Text inputs and dropdowns */
+input[type="text"],
+input[type="password"],
+select {
+    width: 100%;                    /* Full width of container */
+    padding: 12px 16px;
+    font-size: 16px;
+    border: 2px solid #D1D5DB;      /* Light gray border */
+    border-radius: 8px;
+    background-color: white;
+
+    transition: border-color 0.3s ease;
+}
+
+/*
+    CSS SELECTOR EXPLAINED:
+    input[type="text"] = Select ONLY text inputs
+    This is an "attribute selector" - targets elements with specific attributes
+*/
+
+/* Border changes color when user clicks into field */
+input:focus,
+select:focus {
+    outline: none;                  /* Remove default browser outline */
+    border-color: #4F46E5;          /* Indigo border */
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);  /* Glow effect */
+}
+
+/*
+    :FOCUS PSEUDO-CLASS:
+    Applies when element is clicked/tabbed into
+    Other pseudo-classes: :hover, :active, :visited, :disabled
+*/
+
+
+/* ═══════════════════════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════════════════════
+*/
+
+/* Base button styles (shared by all buttons) */
+button {
+    font-family: inherit;           /* Use same font as body */
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;                /* Hand cursor on hover */
+    font-weight: 600;
+
+    transition: all 0.3s ease;
+}
+
+/* Primary button (main actions like "Generate Content") */
+.primary-btn {
+    background-color: #4F46E5;      /* Indigo */
+    color: white;
+}
+
+.primary-btn:hover {
+    background-color: #4338CA;      /* Darker indigo on hover */
+    transform: translateY(-2px);    /* Lift up slightly */
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+}
+
+/*
+    TRANSFORM:
+    Moves, rotates, scales, or skews elements
+    translateY(-2px) = move up 2 pixels
+    Negative Y = up, Positive Y = down
+*/
+
+.primary-btn:active {
+    transform: translateY(0);       /* Push back down when clicked */
+}
+
+/* Secondary button (less important actions like "Check Answer") */
+.secondary-btn {
+    background-color: #6B7280;      /* Gray */
+    color: white;
+}
+
+.secondary-btn:hover {
+    background-color: #4B5563;      /* Darker gray */
+}
+
+/* Next/Previous navigation buttons */
+.next-btn,
+.prev-btn {
+    background-color: #10B981;      /* Green */
+    color: white;
+    padding: 14px 28px;
+    font-size: 16px;
+}
+
+.next-btn:hover,
+.prev-btn:hover {
+    background-color: #059669;      /* Darker green */
+}
+
+.prev-btn {
+    background-color: #6B7280;      /* Gray for Previous */
+}
+
+.prev-btn:hover {
+    background-color: #4B5563;
+}
+
+/* Disabled state (button can't be clicked) */
+button:disabled {
+    background-color: #D1D5DB;      /* Light gray */
+    color: #9CA3AF;                 /* Gray text */
+    cursor: not-allowed;            /* "No entry" cursor */
+    transform: none;                /* Disable hover effects */
+    box-shadow: none;
+}
+
+/* Big prominent button (used for final PR submission) */
+.big-btn {
+    font-size: 18px;
+    padding: 16px 32px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   PERSONALIZATION SECTIONS
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.personalization-block {
+    background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%);
+    border-left: 4px solid #F59E0B;  /* Orange accent */
+}
+
+.personalization-block select {
+    margin-bottom: 16px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   AI-GENERATED CONTENT AREA
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.ai-content {
+    background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+    /* Light green gradient */
+    border-left: 4px solid #10B981;  /* Green accent */
+}
+
+.ai-response {
+    padding: 16px;
+    background-color: white;
+    border-radius: 8px;
+    line-height: 1.8;               /* Extra spacing for readability */
+}
+
+/* Loading state (while waiting for AI response) */
+.loading {
+    color: #6B7280;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+/*
+    We use a separate .loading class so JavaScript can easily find
+    and replace it with the actual AI response
+*/
+
+
+/* ═══════════════════════════════════════════════════════════════
+   GITHUB DATA SECTIONS
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.github-data {
+    background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+    /* Light blue gradient */
+    border-left: 4px solid #3B82F6;  /* Blue accent */
+}
+
+/* Individual project/issue cards */
+.github-item {
+    background-color: white;
+    padding: 16px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: 1px solid #E5E7EB;
+
+    transition: box-shadow 0.3s ease;
+}
+
+.github-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);  /* Shadow on hover */
+}
+
+.github-item h4 {
+    color: #1F2937;
+    margin-bottom: 8px;
+}
+
+.github-item p {
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 8px;
+}
+
+.github-item a {
+    color: #4F46E5;
+    text-decoration: none;          /* Remove underline */
+    font-weight: 600;
+}
+
+.github-item a:hover {
+    text-decoration: underline;     /* Underline on hover */
+}
+
+/* Star count badge */
+.stars {
+    color: #F59E0B;                 /* Orange */
+    font-weight: 600;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   QUIZ SECTIONS
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.quiz-block {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    /* Light yellow gradient */
+    border-left: 4px solid #F59E0B;  /* Orange accent */
+}
+
+.quiz-question {
+    font-weight: 600;
+    font-size: 18px;
+    color: #1F2937;
+    margin-bottom: 16px;
+}
+
+.quiz-options {
+    margin-bottom: 16px;
+}
+
+.quiz-options label {
+    display: block;
+    padding: 12px;
+    margin-bottom: 8px;
+    background-color: white;
+    border: 2px solid #E5E7EB;
+    border-radius: 8px;
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+/*
+    WHY STYLE THE LABEL?
+    Radio buttons are tiny. By styling the whole label,
+    users can click anywhere on the option, not just the tiny circle.
+*/
+
+.quiz-options label:hover {
+    background-color: #F9FAFB;
+    border-color: #4F46E5;
+}
+
+/* Hide default radio button, style our own */
+.quiz-options input[type="radio"] {
+    margin-right: 8px;
+}
+
+/* Feedback messages after submitting quiz */
+.quiz-feedback {
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-top: 12px;
+}
+
+/* Correct answer feedback */
+.quiz-feedback.correct {
+    background-color: #D1FAE5;      /* Light green */
+    color: #059669;                 /* Dark green */
+    border: 2px solid #10B981;
+}
+
+/* Wrong answer feedback */
+.quiz-feedback.incorrect {
+    background-color: #FEE2E2;      /* Light red */
+    color: #DC2626;                 /* Dark red */
+    border: 2px solid #EF4444;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   NAVIGATION SECTION
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.navigation {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 2px solid #E5E7EB;  /* Divider line */
+
+    display: flex;
+    justify-content: space-between;  /* Previous left, Next right */
+    gap: 16px;                      /* Space between buttons */
+}
+
+/*
+    GAP PROPERTY:
+    Modern CSS way to add space between flex items
+    gap: 16px = 16px space between all child elements
+*/
+
+
+/* ═══════════════════════════════════════════════════════════════
+   INFO BOXES
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.info-box {
+    background-color: #EFF6FF;      /* Light blue */
+    border: 2px solid #3B82F6;      /* Blue border */
+    border-radius: 8px;
+    padding: 20px;
+    margin: 16px 0;
+}
+
+.info-box h3,
+.info-box h4 {
+    color: #1E40AF;                 /* Dark blue */
+    margin-bottom: 12px;
+}
+
+.info-box ol,
+.info-box ul {
+    margin-left: 20px;
+}
+
+.info-box li {
+    margin-bottom: 8px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   CODE EXAMPLES
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.code-example {
+    background-color: #1F2937;      /* Dark gray */
+    color: #F9FAFB;                 /* Almost white */
+    padding: 16px;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;  /* Monospace font for code */
+    font-size: 14px;
+    margin: 16px 0;
+    overflow-x: auto;               /* Horizontal scroll for long code */
+}
+
+/*
+    MONOSPACE FONTS:
+    Every character has the same width (unlike normal fonts)
+    Makes code easier to read and align
+    "i" and "m" are the same width!
+*/
+
+
+/* ═══════════════════════════════════════════════════════════════
+   WORKFLOW STEPS
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.workflow-steps {
+    background-color: white;
+    padding: 20px 40px;
+    border-radius: 8px;
+    border-left: 4px solid #10B981;  /* Green accent */
+}
+
+.workflow-steps li {
+    padding: 12px 0;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.workflow-steps li:last-child {
+    border-bottom: none;            /* No border on last item */
+}
+
+/*
+    :LAST-CHILD PSEUDO-CLASS:
+    Targets the last element in a group
+    Similar: :first-child, :nth-child(2), :nth-child(odd)
+*/
+
+
+/* ═══════════════════════════════════════════════════════════════
+   PR SUBMISSION FORM
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.pr-submission-form {
+    background-color: white;
+    padding: 24px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.pr-submission-form h4 {
+    margin-bottom: 20px;
+    color: #1F2937;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   STATUS MESSAGES (shown during PR submission)
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.status-messages {
+    background-color: #EFF6FF;
+    border: 2px solid #3B82F6;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+    text-align: center;
+}
+
+#status-text {
+    font-weight: 600;
+    color: #1E40AF;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   SUCCESS MESSAGE (shown after PR is created)
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.success-message {
+    background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+    border: 3px solid #10B981;
+    border-radius: 12px;
+    padding: 32px;
+    margin-top: 24px;
+    text-align: center;
+}
+
+.success-message h1 {
+    color: #065F46;                 /* Dark green */
+    font-size: 32px;
+    margin-bottom: 16px;
+}
+
+.success-message h2 {
+    color: #059669;
+    font-size: 24px;
+    margin-bottom: 24px;
+}
+
+.success-message h3 {
+    color: #047857;
+    font-size: 20px;
+    margin: 20px 0 12px 0;
+}
+
+.pr-link {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.pr-link a {
+    color: #4F46E5;
+    font-weight: 600;
+    font-size: 16px;
+    word-break: break-all;          /* Break long URLs to fit container */
+}
+
+.what-happened,
+.next-steps {
+    text-align: left;               /* Align lists left, not center */
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 16px 0;
+}
+
+.what-happened ul,
+.next-steps ul {
+    margin-left: 24px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   HELPER CLASSES
+   ═══════════════════════════════════════════════════════════════
+*/
+
+.help-text {
+    font-size: 14px;
+    color: #6B7280;
+    font-style: italic;
+    margin-top: 8px;
+}
+
+/* Active section (visible) */
+.active-section {
+    display: block;
+}
+
+/* Hidden sections */
+.hidden {
+    display: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   LINKS
+   ═══════════════════════════════════════════════════════════════
+*/
+
+a {
+    color: #4F46E5;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #4338CA;
+    text-decoration: underline;
+}
+
+/* Links that open in new tab (external) */
+a[target="_blank"]::after {
+    content: " ↗";                  /* Add arrow icon after link */
+    font-size: 12px;
+}
+
+/*
+    ::AFTER PSEUDO-ELEMENT:
+    Inserts content after an element
+    Used here to add an icon indicating "opens in new tab"
+*/
+
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN (Mobile)
+   ═══════════════════════════════════════════════════════════════
+*/
+
+/* For screens smaller than 768px (tablets and phones) */
+@media (max-width: 768px) {
+
+    /* Hide sidebar on mobile, stack vertically instead */
+    #sidebar {
+        position: relative;         /* Not fixed anymore */
+        width: 100%;
+        height: auto;
+        top: 0;
+    }
+
+    /* Remove left margin since sidebar is now above content */
+    #main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    /* Smaller header padding */
+    header {
+        flex-direction: column;     /* Stack title and progress vertically */
+        padding: 16px;
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    /* Smaller module header */
+    .module-header h2 {
+        font-size: 22px;
+    }
+
+    /* Stack navigation buttons vertically */
+    .navigation {
+        flex-direction: column;
+    }
+
+    .navigation button {
+        width: 100%;                /* Full width buttons */
+    }
+}
+
+/*
+    @MEDIA QUERIES:
+    Apply styles only when certain conditions are met
+    max-width: 768px = "if screen is 768px or smaller"
+    Common breakpoints:
+    - 480px = phones
+    - 768px = tablets
+    - 1024px = laptops
+    - 1200px = desktops
+*/
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════
+*/
+
+/* Fade in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;                 /* Start invisible */
+        transform: translateY(20px); /* Start 20px below */
+    }
+    to {
+        opacity: 1;                 /* End fully visible */
+        transform: translateY(0);   /* End at normal position */
+    }
+}
+
+/*
+    @KEYFRAMES:
+    Defines animation steps
+    "from" = starting state (0%)
+    "to" = ending state (100%)
+    Can also use percentages: 0%, 25%, 50%, 100%
+
+    Usage: animation: fadeIn 0.5s ease;
+    - fadeIn = animation name
+    - 0.5s = duration
+    - ease = timing function
+*/
+
+/* Pulse animation for loading states */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.loading {
+    animation: pulse 2s infinite;   /* Repeats forever */
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════════
+   Small reusable classes for common tasks
+*/
+
+.text-center {
+    text-align: center;
+}
+
+.mt-16 {
+    margin-top: 16px;
+}
+
+.mb-16 {
+    margin-bottom: 16px;
+}
+
+/* Clearfix (fixes float issues - less common with flexbox) */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   PRINT STYLES (for printing the page)
+   ═══════════════════════════════════════════════════════════════
+*/
+
+@media print {
+    /* Hide interactive elements when printing */
+    button,
+    .navigation,
+    #sidebar {
+        display: none;
+    }
+
+    /* Remove shadows and backgrounds to save ink */
+    .content-block,
+    .module-header {
+        box-shadow: none;
+        background: white;
+        border: 1px solid #000;
+    }
+}
+
+/*
+    @MEDIA PRINT:
+    Styles that only apply when user prints the page
+    Good practice to:
+    - Hide navigation/buttons
+    - Remove backgrounds (saves ink)
+    - Ensure text is black on white
+*/
