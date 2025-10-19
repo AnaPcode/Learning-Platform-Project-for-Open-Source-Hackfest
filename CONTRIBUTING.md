@@ -1,4 +1,4 @@
-# Contributing to Open Source Learning Platform
+# Contributing to Open Source Learning
 
 Thank you for your interest in contributing to the Open Source Learning Platform! This project aims to teach beginners how to contribute to open source through AI-powered personalized lessons.
 
