@@ -1,6 +1,7 @@
 # Personal development files (not needed in public repo)
 .claude/
 opensource-learning-spec.md
+memory/system/
 
 # IDE and Editor files
 .vscode/
