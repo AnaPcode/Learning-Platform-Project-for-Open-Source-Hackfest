@@ -5,7 +5,7 @@
 ## 🔗 Links
 
 - **[Live Platform](https://anapcode.github.io/Learning-Platform-Project-for-Open-Source-Hackfest/)** - Start learning now!
-- **[Demo Video](#)** - *(Coming soon)*
+- **[Demo Video](https://youtu.be/GynRLcVCwz8)**
 
 ---
 
