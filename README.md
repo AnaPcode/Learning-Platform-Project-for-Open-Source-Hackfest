@@ -133,6 +133,21 @@ The combination of human creativity and AI assistance demonstrates modern develo
 
 ---
 
+## 🧪 Testing
+
+Currently, the platform has been tested through manual walkthrough of the complete user journey on the live website. All core features - API setup, module progression, AI personalization, GitHub integration, quizzes, and PR automation - have been validated end-to-end.
+
+**Note:** More comprehensive testing is still needed, including:
+- Cross-browser compatibility testing
+- Edge case handling and error scenarios
+- API failure and timeout scenarios
+- Different user flows and interaction patterns
+- Accessibility testing
+
+Contributions to improve test coverage are welcome!
+
+---
+
 ## 🤝 Contributing
 
 We welcome contributions! Whether you're fixing bugs, improving documentation, or adding new features, your help makes open source more accessible to everyone.
