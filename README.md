@@ -1,6 +1,6 @@
 # Open Source Learning
 
-**Learn to contribute to open source through AI-powered personalized lessons**
+**Learn about open source through AI-powered personalized lessons**
 
 ## 🔗 Links
 
@@ -11,7 +11,7 @@
 
 ## 📖 About This Project
 
-Open Source Learning is an interactive web-based platform that teaches complete beginners how to make their first open source contribution. Using Google's Gemini AI, it personalizes lessons based on your interests and skill level, then guides you through submitting a real Pull Request to GitHub.
+Open Source Learning is an interactive web-based platform that teaches beginners about open source and how to make their first open source contribution. Using Google's Gemini AI, it personalizes lessons based on your interests and skill level, then guides you through submitting a real Pull Request to GitHub.
 
 ## ✨ Features
 
