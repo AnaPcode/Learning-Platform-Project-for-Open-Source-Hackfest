@@ -43,7 +43,7 @@ Discover how to identify beginner-friendly contribution opportunities and evalua
 Step-by-step guide through the Git workflow: fork, clone, branch, commit, push, and how to create a Pull Request.
 
 ### Module 4: Join the Community
-Submit your completion PR and learn next steps for continuing your open source journey. Once PR is merged, check for your name in CONTRIBUTORS.md
+Submit your completion PR and learn next steps for continuing your open source journey. Once PR is merged, check for your name in [CONTRIBUTORS.md](CONTRIBUTORS.md)
 
 Example of Completed PR:
 
